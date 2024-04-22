@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Form, Input, Button, Checkbox } from "antd";
 import "./signup.css";
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
+    const navigate = useNavigate();
     // State for form input values
     const [formData, setFormData] = useState({
-        username : '',
+        name : '',
         email: '',
         password: ''
     });
@@ -19,14 +21,14 @@ const Signup = () => {
 
     const onFinish = async () => {
         try {
-            const { username, email, password } = formData;
+            const { name, email, password } = formData;
             console.log(formData);
             const response = await fetch('http://localhost:3000/api/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username , email, password })
+                body: JSON.stringify({ name , email, password })
             });
              
             if (!response.ok) {
@@ -34,6 +36,7 @@ const Signup = () => {
             }
 
             const data = await response.json();
+            navigate('/dashboard');
             console.log('Signup successful:', data);
         } catch (error) {
             console.error('Signup failed:', error);
@@ -53,19 +56,19 @@ const Signup = () => {
                     onFinish={onFinish}
                 >
                     <Form.Item
-                        name="username"
+                        name="name"
                         rules={[
                             {
                                 required: true,
-                                message: "Please input your Username!",
+                                message: "Please input your Usernamename!",
                             },
                         ]}
                     >
                         <Input
                             prefix={<UserOutlined className="site-form-item-icon" />}
-                            placeholder="Username"
-                            name="username"
-                            value={formData.username}
+                            placeholder="name"
+                            name="name"
+                            value={formData.name}
                             onChange={handleInputChange}
                         />
                     </Form.Item>
